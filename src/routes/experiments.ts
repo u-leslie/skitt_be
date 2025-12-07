@@ -223,4 +223,69 @@ router.delete(
   })
 );
 
+/**
+ * @swagger
+ * /api/experiments/{id}/assignments:
+ *   get:
+ *     summary: Get all user assignments for an experiment
+ *     tags: [Experiments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Experiment UUID
+ *     responses:
+ *       200:
+ *         description: List of user assignments
+ */
+router.get(
+  "/:id/assignments",
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const assignments = await experimentService.getExperimentAssignments(id);
+    res.json(assignments);
+  })
+);
+
+/**
+ * @swagger
+ * /api/experiments/{id}/assign/{userId}:
+ *   post:
+ *     summary: Assign a user to a variant in an experiment
+ *     tags: [Experiments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Experiment UUID
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: User UUID
+ *     responses:
+ *       200:
+ *         description: User assigned to variant
+ */
+router.post(
+  "/:id/assign/:userId",
+  asyncHandler(async (req: Request, res: Response) => {
+    const experimentId = req.params.id;
+    const userId = req.params.userId;
+    const result = await experimentService.assignUserToVariant(
+      experimentId,
+      userId
+    );
+    res.json(result);
+  })
+);
+
 export default router;

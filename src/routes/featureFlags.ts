@@ -1,9 +1,11 @@
 import { Router, Request, Response } from "express";
 import { FeatureFlagService } from "../services/featureFlagService";
+import { ExperimentService } from "../services/experimentService";
 import { asyncHandler } from "../middleware/asyncHandler";
 
 const router = Router();
 const featureFlagService = new FeatureFlagService();
+const experimentService = new ExperimentService();
 
 /**
  * @swagger
@@ -163,6 +165,41 @@ router.delete(
     const id = req.params.id;
     await featureFlagService.deleteFlag(id);
     res.status(204).send();
+  })
+);
+
+/**
+ * @swagger
+ * /api/flags/{flagId}/evaluate/{userId}:
+ *   get:
+ *     summary: Evaluate which variant a user should see for a flag
+ *     tags: [Feature Flags]
+ *     parameters:
+ *       - in: path
+ *         name: flagId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Feature flag UUID
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: User UUID
+ *     responses:
+ *       200:
+ *         description: Flag evaluation result with variant
+ */
+router.get(
+  "/:flagId/evaluate/:userId",
+  asyncHandler(async (req: Request, res: Response) => {
+    const flagId = req.params.flagId;
+    const userId = req.params.userId;
+    const result = await experimentService.evaluateFlagForUser(flagId, userId);
+    res.json(result);
   })
 );
 
