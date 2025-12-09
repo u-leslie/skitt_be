@@ -309,6 +309,7 @@ ISC
 3. Add Zod schemas for validation
 4. Update Swagger documentation
 5. Test your changes
+6. Push your codes
 
 ## 📞 Support
 
