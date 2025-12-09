@@ -108,6 +108,6 @@ export class UserModel {
 
   static async delete(id: string): Promise<boolean> {
     const result = await query("DELETE FROM users WHERE id = $1", [id]);
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 }

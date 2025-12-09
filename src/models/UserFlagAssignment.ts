@@ -63,6 +63,6 @@ export class UserFlagAssignmentModel {
       "DELETE FROM user_flag_assignments WHERE user_id = $1 AND flag_id = $2",
       [userId, flagId]
     );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 }
