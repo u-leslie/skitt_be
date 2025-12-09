@@ -63,16 +63,16 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-          format: 'sarif'
-          output: 'trivy-image-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          format: "sarif"
+          output: "trivy-image-results.sarif"
+          severity: "CRITICAL,HIGH"
 
       - name: Upload Trivy image scan results
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         continue-on-error: true
         with:
-          sarif_file: 'trivy-image-results.sarif'
+          sarif_file: "trivy-image-results.sarif"
 
       - name: Run database migrations
         run: |
