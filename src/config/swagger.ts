@@ -17,6 +17,11 @@ const options: swaggerJsdoc.Options = {
         url: `http://localhost:${process.env.PORT || 3001}`,
         description: "Development server",
       },
+      {
+        url:
+          process.env.API_URL || `http://localhost:${process.env.PORT || 3001}`,
+        description: "Production server",
+      },
     ],
     components: {
       schemas: {
@@ -185,7 +190,7 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: ["./src/routes/*.ts"],
+  apis: ["./dist/routes/*.js", "./src/routes/*.ts"],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
