@@ -25,18 +25,6 @@ app.use(
 );
 app.use(express.json());
 
-// Swagger documentation with dynamic server URL
-const swaggerSetup = swaggerUi.setup(swaggerSpec, {
-  customCss: ".swagger-ui .topbar { display: none }",
-  customSiteTitle: "Skitt API Documentation",
-  swaggerOptions: {
-    url: "/api-docs.json", // Use custom endpoint
-    persistAuthorization: true,
-  },
-});
-
-app.use("/api-docs", swaggerUi.serve, swaggerSetup);
-
 // Custom endpoint to serve Swagger JSON with correct server URL
 app.get("/api-docs.json", (req, res) => {
   const protocol = req.protocol;
@@ -55,6 +43,20 @@ app.get("/api-docs.json", (req, res) => {
 
   res.json(swaggerJson);
 });
+
+// Swagger documentation with dynamic server URL
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(null, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Skitt API Documentation",
+    swaggerOptions: {
+      url: "/api-docs.json", // Use custom endpoint with dynamic server URL
+      persistAuthorization: true,
+    },
+  })
+);
 
 // Routes
 app.use("/api/flags", featureFlagsRouter);
