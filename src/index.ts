@@ -27,9 +27,25 @@ app.use(express.json());
 
 // Custom endpoint to serve Swagger JSON with correct server URL
 app.get("/api-docs.json", (req, res) => {
-  const protocol = req.protocol;
-  const host = req.get("host");
-  const baseUrl = process.env.API_BASE_URL || `${protocol}://${host}`;
+  // Use API_BASE_URL from environment if set, otherwise detect from request
+  let baseUrl = process.env.API_BASE_URL;
+
+  if (!baseUrl) {
+    // Try to get the actual host from request headers
+    const protocol = req.protocol || req.get("x-forwarded-proto") || "http";
+    const host =
+      req.get("x-forwarded-host") ||
+      req.get("host") ||
+      `localhost:${process.env.PORT || 3001}`;
+    baseUrl = `${protocol}://${host}`;
+
+    // Replace localhost with actual IP if possible
+    if (host.includes("localhost") && process.env.PUBLIC_IP) {
+      baseUrl = `${protocol}://${process.env.PUBLIC_IP}:${
+        process.env.PORT || 3001
+      }`;
+    }
+  }
 
   const swaggerJson = {
     ...swaggerSpec,
