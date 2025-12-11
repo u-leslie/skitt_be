@@ -1,12 +1,7 @@
-version: '3.8'
-
 services:
   # Backend API
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: runner
+    image: skitt-backend:latest
     container_name: skitt-backend
     restart: unless-stopped
     environment:
@@ -17,6 +12,7 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:3001}
     ports:
       - "3001:3001"
     networks:
