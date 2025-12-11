@@ -14,13 +14,10 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT || 3001}`,
-        description: "Development server",
-      },
-      {
         url:
-          process.env.API_URL || `http://localhost:${process.env.PORT || 3001}`,
-        description: "Production server",
+          process.env.API_BASE_URL ||
+          `http://localhost:${process.env.PORT || 3001}`,
+        description: "API Server",
       },
     ],
     components: {

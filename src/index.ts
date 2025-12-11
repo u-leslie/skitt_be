@@ -16,7 +16,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Allow all origins (for production, specify your frontend domain)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // Swagger documentation
@@ -44,7 +50,9 @@ async function startServer() {
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
-      console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+      console.log(
+        `Swagger docs available at http://localhost:${PORT}/api-docs`
+      );
     });
   } catch (error) {
     console.error("Failed to start server:", error);
