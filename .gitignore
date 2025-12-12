@@ -6,3 +6,6 @@ dist/
 data/
 .DS_Store
 
+# Kubernetes secrets (contains sensitive data)
+k8s/secret.yaml
+

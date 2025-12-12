@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: skitt-prod
+  labels:
+    app: skitt-backend
+data:
+  NODE_ENV: "production"
+  PORT: "3001"
+  API_BASE_URL: "http://skitt-backend-service:3001"
