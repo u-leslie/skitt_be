@@ -8,7 +8,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || "postgres",
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 10000,
   // Enable SSL for RDS connections (set to false for local development)
   ssl:
     process.env.DB_HOST && process.env.DB_HOST.includes("rds.amazonaws.com")
